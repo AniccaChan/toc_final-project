@@ -43,7 +43,6 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.state))
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage("no trigger found"))
-    
 
 if __name__ == "__main__":
     states = ['user', 'hungry', 'breakfast', 'lunch', 'dinner']
@@ -53,8 +52,8 @@ if __name__ == "__main__":
         {'trigger': 'dinner', 'source': 'hungry', 'dest': 'dinner'},
         {'trigger': 'lunch', 'source': 'hungry', 'dest': 'lunch'},
         {'trigger': 'breakfast', 'source': 'hungry', 'dest': 'breakfast'},
-        {'trigger': 'another', 'source':['breakfast,lunch,dinner'], 'dest': None},
-        {'trigger':'goback,','source':['breakfast,lunch,dinner'],'dest':'user'}
+        {'trigger': 'another', 'source':['breakfast','lunch','dinner'], 'dest': None},
+        {'trigger':'goback,','source':['breakfast','lunch','dinner','hungry'],'dest':'user'}
     ]
     machine = Machine(states=states,transitions=transition,initial='user')
     port = int(os.environ.get('PORT', 5000))

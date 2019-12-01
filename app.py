@@ -39,8 +39,11 @@ def callback():
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     try:
-        machine.trigger(event.message.text)
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.state))
+        if(event.message.text == 'now'):
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.state))
+        else:
+            machine.trigger(event.message.text)
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.state))
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage("no trigger found"))
 
@@ -53,7 +56,7 @@ if __name__ == "__main__":
         {'trigger': 'lunch', 'source': 'hungry', 'dest': 'lunch'},
         {'trigger': 'breakfast', 'source': 'hungry', 'dest': 'breakfast'},
         {'trigger': 'another', 'source':['breakfast','lunch','dinner'], 'dest': None},
-        {'trigger':'goback,','source':['breakfast','lunch','dinner','hungry'],'dest':'user'}
+        {'trigger':'goback','source':['breakfast','lunch','dinner','hungry'],'dest':'user'}
     ]
     machine = Machine(states=states,transitions=transition,initial='user')
     port = int(os.environ.get('PORT', 5000))

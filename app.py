@@ -39,7 +39,7 @@ def callback():
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     try:
-        machine.trigger(message)
+        machine.trigger(event.message.text)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.state))
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage("no trigger found"))
@@ -48,7 +48,7 @@ def handle_message(event):
 if __name__ == "__main__":
     states = ['user', 'hungry', 'breakfast', 'lunch', 'dinner']
     transition = [
-        {'trigger': 'I\'m hungry', 'source': 'user', 'dest': 'hungry'},
+        {'trigger': '0', 'source': 'user', 'dest': 'hungry'},
         {'trigger': 'no', 'source': 'user', 'dest': 'user'},
         {'trigger': 'dinner', 'source': 'hungry', 'dest': 'dinner'},
         {'trigger': 'lunch', 'source': 'hungry', 'dest': 'lunch'},

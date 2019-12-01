@@ -39,7 +39,7 @@ def callback():
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     try:
-        machine.trigger('message')
+        machine.trigger(message)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.state))
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage("no trigger found"))

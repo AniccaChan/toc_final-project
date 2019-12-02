@@ -32,7 +32,7 @@ class toc_machine(object):
     def __init__(self,**machine_configs):
         self.machine = Machine(model=self, **machine_configs)
     def quots(self):
-        self.passing = "hello"
+        self.passing = '夏天的漂鳥飛來我的窗前歌唱又飛走了.而那無歌的,秋天的黃葉,隨風飄落以一聲歎息'
     
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -61,12 +61,12 @@ def handle_message(event):
             machine.trigger(event.message.text)
             line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.passing))
     except:
-        line_bot_api.reply_message(event.reply_token,TextSendMessage("no trigger found"))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage("error occur"))
 
 if __name__ == "__main__":
     states = ['user', 'hungry', 'breakfast', 'lunch', 'dinner']
     transition = [
-        {'trigger': '0', 'source': 'user', 'dest': 'hungry','after':'quots'},
+        {'trigger': '0', 'source': 'user', 'dest': 'user','after':'quots'},
         {'trigger': 'no', 'source': 'user', 'dest': 'user'},
         {'trigger': 'dinner', 'source': 'hungry', 'dest': 'dinner'},
         {'trigger': 'lunch', 'source': 'hungry', 'dest': 'lunch'},

@@ -19,10 +19,11 @@ line_bot_api = LineBotApi(
 # Channel Secret
 handler = WebhookHandler('fadfbe7cb1fe9875c7c9699e3a64a5d4')
 class toc_machine(object):
+    self.passing = "not "
     def __init__(self,**machine_configs):
         self.machine = Machine(model=self, **machine_configs)
     def quots(self):
-        passing = "Hmmmmmmmmmm"
+        self.passing = "Hmmmmmmmmmm"
     
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -56,7 +57,7 @@ def handle_message(event):
 if __name__ == "__main__":
     states = ['user', 'hungry', 'breakfast', 'lunch', 'dinner']
     transition = [
-        {'trigger': '0', 'source': 'user', 'dest': 'hungry','conditions':'quots'},
+        {'trigger': '0', 'source': 'user', 'dest': 'hungry','before':'quots'},
         {'trigger': 'no', 'source': 'user', 'dest': 'user'},
         {'trigger': 'dinner', 'source': 'hungry', 'dest': 'dinner'},
         {'trigger': 'lunch', 'source': 'hungry', 'dest': 'lunch'},

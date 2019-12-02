@@ -38,6 +38,12 @@ class toc_machine(object):
         self.passing = "餓了嗎? 餓了按1 不餓按0"
     def is_hungry(self):
         self.passing = "找早餐按1 找午餐按2 找晚餐按3 返回按0"
+    def find_dinner(self):
+        self.passing = "我找到 Mcd d\n 再找一家按1, 返回按0"
+    def find_lunch(self):
+        self.passing = "我找到 Mcd l\n 再找一家按1, 返回按0"
+    def find_breakfast(self):
+        self.passing = "我找到 Mcd b\n 再找一家按1, 返回按0"
     
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -74,10 +80,10 @@ if __name__ == "__main__":
     transition = [
         {'trigger': '0', 'source': 'user', 'dest': 'user','after':'quots'},
         {'trigger': '1', 'source': 'user', 'dest': 'hungry','after':'is_hungry'},
-        {'trigger': '3', 'source': 'hungry', 'dest': 'dinner'},
-        {'trigger': '2', 'source': 'hungry', 'dest': 'lunch'},
-        {'trigger': '1', 'source': 'hungry', 'dest': 'breakfast'},
-        {'trigger': 'another', 'source':['breakfast','lunch','dinner'], 'dest': None},
+        {'trigger': '3', 'source': 'hungry', 'dest': 'dinner','after':'find_dinner'},
+        {'trigger': '2', 'source': 'hungry', 'dest': 'lunch','after':'find_lunch'},
+        {'trigger': '1', 'source': 'hungry', 'dest': 'breakfast','after':'find_breakfast'},
+        {'trigger': '1', 'source':['breakfast','lunch','dinner'], 'dest': None,'after':['find_breakfast','find_lunch','find_dinner']},
         {'trigger':'0','source':['breakfast','lunch','dinner','hungry'],'dest':'user','before':'welcome'}
     ]
     machine = toc_machine(states=states,transitions=transition,initial='user')

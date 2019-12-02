@@ -60,8 +60,8 @@ def handle_message(event):
         else:
             machine.trigger(event.message.text)
             line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.passing))
-    except:
-        line_bot_api.reply_message(event.reply_token,TextSendMessage("error occur"))
+    except Exception:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(Exception.args))
 
 if __name__ == "__main__":
     states = ['user', 'hungry', 'breakfast', 'lunch', 'dinner']

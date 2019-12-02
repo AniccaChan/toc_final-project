@@ -64,6 +64,6 @@ if __name__ == "__main__":
         {'trigger': 'another', 'source':['breakfast','lunch','dinner'], 'dest': None},
         {'trigger':'goback','source':['breakfast','lunch','dinner','hungry'],'dest':'user'}
     ]
-    machine = toc_machine(model = self,states=states,transitions=transition,initial='user')
+    machine = toc_machine(states=states,transitions=transition,initial='user')
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

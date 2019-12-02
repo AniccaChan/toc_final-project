@@ -33,7 +33,7 @@ class toc_machine(object):
     def __init__(self,**machine_configs):
         self.machine = Machine(model=self, **machine_configs)
     def quots(self):
-        self.passing = random.choice(self.quotes +'\n\n 餓了按1 再來一句按0')
+        self.passing = random.choice(self.quotes)+'\n\n 餓了按1 再來一句按0'
     def welcome(self):
         self.passing = "餓了嗎? 餓了按1 不餓按0"
     def is_hungry(self):
@@ -66,7 +66,7 @@ def handle_message(event):
             machine.trigger(event.message.text)
             line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.passing))
     except Exception:
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(Exception.args))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage("error occur"))
 
 if __name__ == "__main__":
     

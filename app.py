@@ -19,7 +19,7 @@ line_bot_api = LineBotApi(
 # Channel Secret
 handler = WebhookHandler('fadfbe7cb1fe9875c7c9699e3a64a5d4')
 class toc_machine(object):
-    self.passing = "not "
+    passing = "not "
     def __init__(self,**machine_configs):
         self.machine = Machine(model=self, **machine_configs)
     def quots(self):
@@ -50,14 +50,14 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.state))
         else:
             machine.trigger(event.message.text)
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(passing))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.passing))
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage("no trigger found"))
 
 if __name__ == "__main__":
     states = ['user', 'hungry', 'breakfast', 'lunch', 'dinner']
     transition = [
-        {'trigger': '0', 'source': 'user', 'dest': 'hungry','before':'quots'},
+        {'trigger': '0', 'source': 'user', 'dest': 'hungry','after':'quots'},
         {'trigger': 'no', 'source': 'user', 'dest': 'user'},
         {'trigger': 'dinner', 'source': 'hungry', 'dest': 'dinner'},
         {'trigger': 'lunch', 'source': 'hungry', 'dest': 'lunch'},

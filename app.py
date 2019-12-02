@@ -32,7 +32,7 @@ class toc_machine(object):
     def __init__(self,**machine_configs):
         self.machine = Machine(model=self, **machine_configs)
     def quots(self):
-        self.passing = random.choice(quotes)
+        self.passing = "hello"
     
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])

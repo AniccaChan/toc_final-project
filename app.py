@@ -30,20 +30,36 @@ class toc_machine(object):
             '不要因為你自己沒有食慾而責怪食物.',
             '我們錯認這世界卻說它欺騙了我們.'
             ]
+    #[['name'],['add'],['open_time']]
+    breakfast=[['麥當勞-台南大學店',' 701台南市東區大學路26號','24/7'],
+            ['7-ELEVEN 育樂門市','台南市東區勝利路118號','24/7'],
+            ['勝利早點','台南市東區勝利路119號','16:30-10:30'],
+            ['老丘早餐','台南市東區勝利路135號','06:00-12:00'],
+            ['大成美食','台南市東區大學路西段47號','06:00-12:00（週日公休）']]
+    lunch=[['麥當勞-台南大學店',' 701台南市東區大學路26號','24/7'],
+            ['7-ELEVEN 育樂門市','台南市東區勝利路118號','24/7'],
+            ['勝利早點','台南市東區勝利路119號','16:30-10:30'],
+            ['紅樓小館','台南市東區勝利路165巷11號','11:00~22:00周一公休'],
+            ['水餃之家','台南市北區長勝路5號','週一~週五 11:10-14:00;17:00-20:00;週六 11:10-14:00']]
+    dinner =[['麥當勞-台南大學店',' 701台南市東區大學路26號','24/7'],
+            ['7-ELEVEN 育樂門市','台南市東區勝利路118號','24/7']]
     def __init__(self,**machine_configs):
         self.machine = Machine(model=self, **machine_configs)
     def quots(self):
-        self.passing = random.choice(self.quotes)+'\n\n 餓了按1 再來一句按0'
+        self.passing = random.choice(self.quotes)+'\n\n餓了按1 再來一句按0'
     def welcome(self):
-        self.passing = "餓了嗎? 餓了按1 不餓按0"
+        self.passing = "餓了嗎? 餓了按1 不餓 就想聽聽幹話按0"
     def is_hungry(self):
         self.passing = "找早餐按1 找午餐按2 找晚餐按3 返回按0"
     def find_dinner(self):
-        self.passing = "我找到 Mcd d\n 再找一家按1, 返回按0"
+        din = random.choice(self.dinner)
+        self.passing = "我找到 {0}\n地址在:{1}\n營業時間:{2}\n再找一家按1, 返回按0".format(din[0],din[1],din[2])
     def find_lunch(self):
-        self.passing = "我找到 Mcd l\n 再找一家按1, 返回按0"
+        lun = random.choice(self.lunch)
+        self.passing = "我找到 {0}\n地址在:{1}\n營業時間:{2}\n再找一家按1, 返回按0".format(lun[0],lun[1],lun[2])
     def find_breakfast(self):
-        self.passing = "我找到 Mcd b\n 再找一家按1, 返回按0"
+        bre = random.choice(self.breakfast)
+        self.passing = "我找到 {0}\n地址在:{1}\n營業時間:{2}\n再找一家按1, 返回按0".format(bre[0],bre[1],bre[2])
     
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])

@@ -8,7 +8,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-from transitions import Machine
+from transitions.extensions import GraphMachine
 app = Flask(__name__)
 passing ="not trig"
 class foo(object):
@@ -18,7 +18,12 @@ line_bot_api = LineBotApi(
     'kqdZOUNiHm/IgKxWwtjPH2sKpjwgiy0oPan2W6Jv1NpIDFumqV4KDwDnDRZ7o9wn2BTpmfmiHRmH9wxgRTggr0NwWkAU+MMgBBASB3KCF0WIRpKcDuWNmwcEPDcG+Rr2K13BhD/Nzp0FwK7S8lIR2QdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
 handler = WebhookHandler('fadfbe7cb1fe9875c7c9699e3a64a5d4')
-
+class toc_machine(GraphMachine):
+    def __init__(self,**machine_configs):
+        self.machine = GraphMachine(model=self, **machine_configs)
+    def quots(self):
+        passing = "Hmmmmmmmmmm"
+    
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -34,7 +39,7 @@ def callback():
         abort(400)
     return 'OK'
 
-def not_hungry():
+def not_hungry(self):
     passing = "hmm? what are you doing then"
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
@@ -51,7 +56,7 @@ def handle_message(event):
 if __name__ == "__main__":
     states = ['user', 'hungry', 'breakfast', 'lunch', 'dinner']
     transition = [
-        {'trigger': '0', 'source': 'user', 'dest': 'hungry','after':'not_hungry'},
+        {'trigger': '0', 'source': 'user', 'dest': 'hungry','after':'quots'},
         {'trigger': 'no', 'source': 'user', 'dest': 'user'},
         {'trigger': 'dinner', 'source': 'hungry', 'dest': 'dinner'},
         {'trigger': 'lunch', 'source': 'hungry', 'dest': 'lunch'},
@@ -59,6 +64,6 @@ if __name__ == "__main__":
         {'trigger': 'another', 'source':['breakfast','lunch','dinner'], 'dest': None},
         {'trigger':'goback','source':['breakfast','lunch','dinner','hungry'],'dest':'user'}
     ]
-    machine = Machine(states=states,transitions=transition,initial='user')
+    machine = toc_machine(model = self,states=states,transitions=transition,initial='user')
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

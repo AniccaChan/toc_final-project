@@ -8,7 +8,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-from transitions.extensions import GraphMachine
+from transitions import Machine
 app = Flask(__name__)
 passing ="not trig"
 class foo(object):
@@ -18,9 +18,9 @@ line_bot_api = LineBotApi(
     'kqdZOUNiHm/IgKxWwtjPH2sKpjwgiy0oPan2W6Jv1NpIDFumqV4KDwDnDRZ7o9wn2BTpmfmiHRmH9wxgRTggr0NwWkAU+MMgBBASB3KCF0WIRpKcDuWNmwcEPDcG+Rr2K13BhD/Nzp0FwK7S8lIR2QdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
 handler = WebhookHandler('fadfbe7cb1fe9875c7c9699e3a64a5d4')
-class toc_machine(GraphMachine):
+class toc_machine(object):
     def __init__(self,**machine_configs):
-        self.machine = GraphMachine(model=self, **machine_configs)
+        self.machine = Machine(model=self, **machine_configs)
     def quots(self):
         passing = "Hmmmmmmmmmm"
     

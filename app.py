@@ -9,8 +9,8 @@ from linebot.exceptions import (
 )
 from linebot.models import *
 from transitions import Machine
+import random
 app = Flask(__name__)
-passing ="not trig"
 class foo(object):
     pass
 # Channel Access Token
@@ -20,10 +20,19 @@ line_bot_api = LineBotApi(
 handler = WebhookHandler('fadfbe7cb1fe9875c7c9699e3a64a5d4')
 class toc_machine(object):
     passing = "not "
+    quotes =['夏天的漂鳥飛來我的窗前歌唱又飛走了.而那無歌的,秋天的黃葉,隨風飄落以一聲歎息',
+            '世上流浪兒的隊伍啊, 願留你們的足跡在我的話語之中.',
+            '這世界面對它的戀人脫下"巨大"這個面具.它變得微小如歌,如永恆的吻.',
+            '如果你因為錯失陽光而流淚,你也將錯失群星',
+            '我不能選擇最好, 而是最好選擇了我',
+            '將燈籠背負在背上的人們, 他們將影子投射到身前來.',
+            '不要因為你自己沒有食慾而責怪食物.',
+            '我們錯認這世界卻說它欺騙了我們.'
+            ]
     def __init__(self,**machine_configs):
         self.machine = Machine(model=self, **machine_configs)
     def quots(self):
-        self.passing = "Hmmmmmmmmmm"
+        self.passing = random.choice(quotes)
     
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])

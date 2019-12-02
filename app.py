@@ -8,6 +8,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
+
 from transitions import Machine
 import random
 app = Flask(__name__)
@@ -32,7 +33,11 @@ class toc_machine(object):
     def __init__(self,**machine_configs):
         self.machine = Machine(model=self, **machine_configs)
     def quots(self):
-        self.passing = random.choice(self.quotes)
+        self.passing = random.choice(self.quotes +'\n\n 餓了按1 再來一句按0')
+    def welcome(self):
+        self.passing = "餓了嗎? 餓了按1 不餓按0"
+    def is_hungry(self):
+        self.passing = "找早餐按1 找午餐按2 找晚餐按3 返回按0"
     
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -64,15 +69,16 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(Exception.args))
 
 if __name__ == "__main__":
+    
     states = ['user', 'hungry', 'breakfast', 'lunch', 'dinner']
     transition = [
         {'trigger': '0', 'source': 'user', 'dest': 'user','after':'quots'},
-        {'trigger': 'no', 'source': 'user', 'dest': 'user'},
-        {'trigger': 'dinner', 'source': 'hungry', 'dest': 'dinner'},
-        {'trigger': 'lunch', 'source': 'hungry', 'dest': 'lunch'},
-        {'trigger': 'breakfast', 'source': 'hungry', 'dest': 'breakfast'},
+        {'trigger': '1', 'source': 'user', 'dest': 'hungry','after':'is_hungry'},
+        {'trigger': '3', 'source': 'hungry', 'dest': 'dinner'},
+        {'trigger': '2', 'source': 'hungry', 'dest': 'lunch'},
+        {'trigger': '1', 'source': 'hungry', 'dest': 'breakfast'},
         {'trigger': 'another', 'source':['breakfast','lunch','dinner'], 'dest': None},
-        {'trigger':'goback','source':['breakfast','lunch','dinner','hungry'],'dest':'user'}
+        {'trigger':'0','source':['breakfast','lunch','dinner','hungry'],'dest':'user','before':'welcome'}
     ]
     machine = toc_machine(states=states,transitions=transition,initial='user')
     port = int(os.environ.get('PORT', 5000))

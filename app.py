@@ -10,7 +10,7 @@ from linebot.exceptions import (
 from linebot.models import *
 from transitions import Machine
 app = Flask(__name__)
-
+passing ="not trig"
 class foo(object):
     pass
 # Channel Access Token
@@ -34,7 +34,8 @@ def callback():
         abort(400)
     return 'OK'
 
-
+def not_hungry():
+    passing = "hmm? what are you doing then"
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
@@ -43,14 +44,14 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.state))
         else:
             machine.trigger(event.message.text)
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.state))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(passing))
     except:
         line_bot_api.reply_message(event.reply_token,TextSendMessage("no trigger found"))
 
 if __name__ == "__main__":
     states = ['user', 'hungry', 'breakfast', 'lunch', 'dinner']
     transition = [
-        {'trigger': '0', 'source': 'user', 'dest': 'hungry'},
+        {'trigger': '0', 'source': 'user', 'dest': 'hungry','after':'not_hungry'},
         {'trigger': 'no', 'source': 'user', 'dest': 'user'},
         {'trigger': 'dinner', 'source': 'hungry', 'dest': 'dinner'},
         {'trigger': 'lunch', 'source': 'hungry', 'dest': 'lunch'},

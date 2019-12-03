@@ -94,7 +94,7 @@ def handle_message(event):
     try:
         current_machine = machine[user_id]
     except:
-       # machine[user_id] = toc_machine(states=states,transition=transition,initial='user')
+        machine[user_id] = toc_machine(states=states,transitions=transition,initial='user')
         line_bot_api.reply_message(event.reply_token,TextSendMessage('餓了嗎? 餓了按1 不餓 就想聽聽幹話按0'))
         return
     try:
@@ -118,6 +118,5 @@ if __name__ == "__main__":
         {'trigger': '1', 'source':['breakfast','lunch','dinner'], 'dest': None,'after':['find_breakfast','find_lunch','find_dinner']},
         {'trigger':'0','source':['breakfast','lunch','dinner','hungry'],'dest':'user','before':'welcome'}
     ]
-    
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

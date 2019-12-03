@@ -62,16 +62,15 @@ class toc_machine(object):
         self.passing = "餓了嗎? 餓了按1 不餓 就想聽聽幹話按0"
     def is_hungry(self):
         self.passing = "找早餐按1 找午餐按2 找晚餐按3 返回按0"
-    def find_dinner(self):
-        din = random.choice(self.dinner)
-        self.passing = "我找到 {0}\n地址在: {1}\n營業時間: {2}\n再找一家按1, 返回按0".format(din[0],din[1],din[2])
-    def find_lunch(self):
-        lun = random.choice(self.lunch)
-        self.passing = "我找到 {0}\n地址在: {1}\n營業時間: {2}\n再找一家按1, 返回按0".format(lun[0],lun[1],lun[2])
     def find_breakfast(self):
         bre = random.choice(self.breakfast)
         self.passing = "我找到 {0}\n地址在: {1}\n營業時間: {2}\n再找一家按1, 返回按0".format(bre[0],bre[1],bre[2])
-    
+    def find_lunch(self):
+        lun = random.choice(self.lunch)
+        self.passing = "我找到 {0}\n地址在: {1}\n營業時間: {2}\n再找一家按1, 返回按0".format(lun[0],lun[1],lun[2])
+    def find_dinner(self):
+        din = random.choice(self.dinner)
+        self.passing = "我找到 {0}\n地址在: {1}\n營業時間: {2}\n再找一家按1, 返回按0".format(din[0],din[1],din[2])
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -95,8 +94,6 @@ def handle_message(event):
         current_machine = machine[user_id]
     except:
         machine[user_id] = toc_machine(states=states,transitions=transition,initial='user')
-        line_bot_api.reply_message(event.reply_token,TextSendMessage('餓了嗎? 餓了按1 不餓 就想聽聽幹話按0'))
-        return
     try:
         if(event.message.text == 'now'):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(event.message.source.userid))
@@ -104,7 +101,7 @@ def handle_message(event):
             current_machine.trigger(event.message.text)
             line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.passing))
     except Exception:
-        line_bot_api.reply_message(event.reply_token,TextSendMessage("error occur"))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage("0 1 2 3 ??????"))
 
 if __name__ == "__main__":
     
@@ -115,7 +112,9 @@ if __name__ == "__main__":
         {'trigger': '3', 'source': 'hungry', 'dest': 'dinner','after':'find_dinner'},
         {'trigger': '2', 'source': 'hungry', 'dest': 'lunch','after':'find_lunch'},
         {'trigger': '1', 'source': 'hungry', 'dest': 'breakfast','after':'find_breakfast'},
-        {'trigger': '1', 'source':['breakfast','lunch','dinner'], 'dest': None,'after':['find_breakfast','find_lunch','find_dinner']},
+        {'trigger': '1', 'source':'breakfast','dest': None,'after':'find_breakfast'},
+        {'trigger': '1', 'source':'lunch','dest': None,'after':'find_lunch'},
+        {'trigger': '1', 'source':'dinner','dest': None,'after':'find_diner'},
         {'trigger':'0','source':['breakfast','lunch','dinner','hungry'],'dest':'user','before':'welcome'}
     ]
     port = int(os.environ.get('PORT', 5000))

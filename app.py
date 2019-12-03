@@ -90,13 +90,18 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
-    
+    try:
+        current_machine = machine[event.message.source.userid]
+    except:
+        #machine[event.message.source.userid] = toc_machine(states=states,transition=transition,initial='user')
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(event.message.source.userid))
+        return
     try:
         if(event.message.text == 'now'):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(event.message.source.userid))
         else:
-            #current_machine.trigger(event.message.text)
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(event.message.source.userid)
+            current_machine.trigger(event.message.text)
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.passing))
     except Exception:
         line_bot_api.reply_message(event.reply_token,TextSendMessage("error occur"))
 

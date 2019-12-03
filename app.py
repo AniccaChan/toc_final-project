@@ -93,7 +93,7 @@ def handle_message(event):
     try:
         current_machine = machine[event.message.source.userid]
     except:
-        
+        machine[event.message.source.userid] = toc_machine(states=states,transition=transition,initial='user')
         line_bot_api.reply_message(event.reply_token,TextSendMessage('餓了嗎? 餓了按1 不餓 就想聽聽幹話按0'))
         return
     try:

@@ -91,10 +91,10 @@ def callback():
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     try:
-        current_machine = machine[event.message.source.userid]
+        current_machine = machine[event.message.source.user]
     except:
         #machine[event.message.source.userid] = toc_machine(states=states,transition=transition,initial='user')
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(event.message.source.userid))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(event.message.source.user))
         return
     try:
         if(event.message.text == 'now'):

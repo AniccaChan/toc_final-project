@@ -19,6 +19,7 @@ line_bot_api = LineBotApi(
     'kqdZOUNiHm/IgKxWwtjPH2sKpjwgiy0oPan2W6Jv1NpIDFumqV4KDwDnDRZ7o9wn2BTpmfmiHRmH9wxgRTggr0NwWkAU+MMgBBASB3KCF0WIRpKcDuWNmwcEPDcG+Rr2K13BhD/Nzp0FwK7S8lIR2QdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
 handler = WebhookHandler('fadfbe7cb1fe9875c7c9699e3a64a5d4')
+machine = {}
 class toc_machine(object):
     passing = "not "
     quotes =['夏天的漂鳥飛來我的窗前歌唱又飛走了.而那無歌的,秋天的黃葉,隨風飄落以一聲歎息',
@@ -86,17 +87,22 @@ def callback():
         abort(400)
     return 'OK'
 
-def not_hungry(self):
-    passing = "hmm? what are you doing then"
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     try:
+        current_machine = machine[event.message.source.userid]
+    except:
+        machine[event.message.source.userid] = toc_machine(states,transitions=transition,initial='user')
+        current_machine = machine[event.message.source.userid]
+        line_bot_api.reply_message(event.reply_token,TextSendMessage('餓了嗎? 餓了按1 不餓 就想聽聽幹話按0'))
+        return
+    try:
         if(event.message.text == 'now'):
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.state))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.state))
         else:
-            machine.trigger(event.message.text)
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(machine.passing))
+            current_machine.trigger(event.message.text)
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.passing))
     except Exception:
         line_bot_api.reply_message(event.reply_token,TextSendMessage("error occur"))
 
@@ -112,6 +118,6 @@ if __name__ == "__main__":
         {'trigger': '1', 'source':['breakfast','lunch','dinner'], 'dest': None,'after':['find_breakfast','find_lunch','find_dinner']},
         {'trigger':'0','source':['breakfast','lunch','dinner','hungry'],'dest':'user','before':'welcome'}
     ]
-    machine = toc_machine(states=states,transitions=transition,initial='user')
+    
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

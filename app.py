@@ -96,12 +96,12 @@ def handle_message(event):
         machine[user_id] = toc_machine(states=states,transitions=transition,initial='user')
     try:
         if(event.message.text == 'now'):
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(event.message.source.userid))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.states))
         else:
             current_machine.trigger(event.message.text)
             line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.passing))
     except Exception:
-        line_bot_api.reply_message(event.reply_token,TextSendMessage("0 1 2 3 ??????"))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage("hmmm 有甚麼出錯了 再試一次吧"))
 
 if __name__ == "__main__":
     

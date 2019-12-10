@@ -59,7 +59,7 @@ class toc_machine(object):
     def quots(self):
         self.passing = random.choice(self.quotes)+'\n\n餓了按1 再來一句按0'
     def welcome(self):
-        self.passing = "餓了嗎? 餓了按1 不餓 就想聽聽幹話按0"
+        self.passing = "餓了嗎? 餓了按1 不餓按0"
     def is_hungry(self):
         self.passing = "找早餐按1 找午餐按2 找晚餐按3 返回按0"
     def find_breakfast(self):
@@ -98,11 +98,11 @@ def handle_message(event):
         if(event.message.text == 'now'):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.state))
         elif(event.message.text == 'showfsm'):
-            line_bot_api.reply_message(event.reply_token,ImageSendMessage("https://raw.githubusercontent.com/AniccaChan/toc_final-project/testBranch/fsm.png?token=AH2XPZPXYCO24S7LIX4TPCK57CWX2"))
+            line_bot_api.reply_message(event.reply_token,ImageSendMessage("https://raw.githubusercontent.com/AniccaChan/toc_final-project/testBranch/fsm.png?token=AH2XPZPXYCO24S7LIX4TPCK57CWX2","https://raw.githubusercontent.com/AniccaChan/toc_final-project/testBranch/fsm.png?token=AH2XPZPXYCO24S7LIX4TPCK57CWX2"))
         else:
             current_machine.trigger(event.message.text)
             line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.passing))
-    except Exception:
+    except Exception:    
         line_bot_api.reply_message(event.reply_token,TextSendMessage("hmmm 有甚麼出錯了 再試一次吧"))
 
 if __name__ == "__main__":

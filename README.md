@@ -16,7 +16,7 @@
 
 ## 試用一下
 
-![Alt_text](./qrcode.jpg)
+![Alt_text](./qrcode.png)
 
 只要跟著機器人指示走就好, 傳0 1 2 3
 

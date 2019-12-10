@@ -94,6 +94,7 @@ def handle_message(event):
         current_machine = machine[user_id]
     except:
         machine[user_id] = toc_machine(states=states,transitions=transition,initial='user')
+        current_machine = machine[user_id]
     try:
         if(event.message.text == 'now'):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.state))
@@ -102,7 +103,7 @@ def handle_message(event):
         else:
             current_machine.trigger(event.message.text)
             line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.passing))
-    except Exception:    
+    except:    
         line_bot_api.reply_message(event.reply_token,TextSendMessage("hmmm 有甚麼出錯了 再試一次吧"))
 
 if __name__ == "__main__":

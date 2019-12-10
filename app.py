@@ -96,7 +96,9 @@ def handle_message(event):
         machine[user_id] = toc_machine(states=states,transitions=transition,initial='user')
     try:
         if(event.message.text == 'now'):
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.states))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.state))
+        elif(event.message.text == 'showfsm'):
+            line_bot_api.reply_message(event.reply_token,ImageSendMessage("https://raw.githubusercontent.com/AniccaChan/toc_final-project/testBranch/fsm.png?token=AH2XPZPXYCO24S7LIX4TPCK57CWX2"))
         else:
             current_machine.trigger(event.message.text)
             line_bot_api.reply_message(event.reply_token,TextSendMessage(current_machine.passing))
